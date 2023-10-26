@@ -6,12 +6,18 @@ import json
 import requests
 import execjs
 import os
+import re
 
 
 # 读取百度翻译的加盐算法
-js_file_path = os.path.dirname(__file__) + '/js/BaiduTranslate_sign.js'
-with open(js_file_path, 'r', encoding='utf-8') as f:
+js_file = os.path.dirname(__file__) + '/js/BaiduTranslate_sign.js'
+with open(js_file, 'r', encoding='utf-8') as f:
     sign_js = execjs.compile(f.read())
+
+# 读取json
+json_file = os.path.dirname(__file__) + '/baidu_devapi.json'
+with open(json_file, 'r') as f:
+    api_dict = json.load(f)
 
 # 判断字符串是否包含中文
 def is_contain_chinese(check_str):
@@ -19,6 +25,17 @@ def is_contain_chinese(check_str):
         if u'\u4e00' <= ch <= u'\u9fff':
             return True
     return False
+
+# 替换字符串中间一部分为'*'，reserve_digits是首尾保留位数
+def string_asterisk_mask(str, reserve_digits):
+    if len(str)==1:
+        return '*'
+    elif len(str) <= reserve_digits * 2:
+        return str[:1] + re.sub(r'.','*', str[1:])
+    else:
+        return (str[:reserve_digits]
+                + re.sub(r'.','*', str[reserve_digits:-reserve_digits])
+                + str[-reserve_digits:])
 
 # 开发者API翻译模块
 class BaiduTrans_devapi:
@@ -40,9 +57,10 @@ class BaiduTrans_devapi:
 
     def translation_devapi(self, Translate_to_language, text):
 
-        # 填写你的BaiduTrans开发账号appid及密钥
-        appid = '000000000000000000' #此处引号内填入appid
-        appkey = 'xxxxxxxxxxxxxxxxxxxx'  #此处引号内填入密钥
+        # get appid and appkey
+        appid = api_dict['appid']
+        appkey = api_dict['appkey']
+        print(f'BaiduTrans_devapi: appid={string_asterisk_mask(appid, 3)}, appkey={string_asterisk_mask(appkey, 3)}')
 
         # For list of language codes, please refer to `https://api.fanyi.baidu.com/doc/21`
         from_lang = 'auto'
@@ -124,8 +142,9 @@ class BaiduTrans_v2trans:
         try:
             baidutranslate = requests.post(url, headers=headers, data=data).json()
             translate_result = baidutranslate['trans_result']['data'][0]['dst']
-
+            print('debug:baidutranslate:' + text + ' ---> ' + baidutranslate)
         except Exception as e:
+            print('debug:baidutranslate:Error')
             print(e)
 
         # 如果目标语言是英语 且 翻译结果包含中文 且 原始文本不包含中文，返回原文
