@@ -92,9 +92,9 @@ class BaiduTrans_devapi:
 
         translate_result = ''
         for line in result:
-            translate_result = translate_result + '\n' + (line['dst'])
+            translate_result = translate_result + (line['dst']) + '\n'
         print('BaiduTrans_Api:' + text + ' ---> ' + translate_result)
-        return (translate_result,)
+        return (translate_result[:-1],)
 
 class BaiduTrans_v2trans:
     def __init__(self):
@@ -118,7 +118,6 @@ class BaiduTrans_v2trans:
 
         from_lang = 'auto'
         to_lang = Translate_to_language
-        translate_result = ''
 
         token = '012cd082bf1f821bb7d94981bf6d477a'
         url = 'https://fanyi.baidu.com/v2transapi'
@@ -151,7 +150,7 @@ class BaiduTrans_v2trans:
 
         translate_result = ''
         for line in result:
-            translate_result = translate_result + '\n' + (line['dst'])
+            translate_result = translate_result + (line['dst']) + '\n'
         # # 如果目标语言是英语 且 翻译结果包含中文 且 原始文本不包含中文，返回原文
         # if Translate_to_language == 'en' and is_contain_chinese(translate_result) and not is_contain_chinese(text):
         #     translate_result = text
@@ -160,7 +159,7 @@ class BaiduTrans_v2trans:
         #     translate_result = text
 
         print('BaiduTrans_v2trans:' + text + ' ---> ' + translate_result)
-        return (translate_result,)
+        return (translate_result[:-1],)
 
 # NOTE: names should be globally unique
 NODE_CLASS_MAPPINGS = {
