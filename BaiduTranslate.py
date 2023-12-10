@@ -81,6 +81,7 @@ class BaiduTrans_devapi:
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         payload = {'appid': appid, 'q': query, 'from': from_lang, 'to': to_lang, 'salt': salt, 'sign': sign}
 
+        result = [{'src': 'API error！', 'dst': '百度翻译API错误!，请检查是否填写正确的API Key并且有足够的API流量?'}]
         # Send request
         try:
             r = requests.post(url, params=payload, headers=headers)
@@ -92,7 +93,6 @@ class BaiduTrans_devapi:
         translate_result = ''
         for line in result:
             translate_result = translate_result + '\n' + (line['dst'])
-            print(s)
         print('BaiduTrans_Api:' + text + ' ---> ' + translate_result)
         return (translate_result,)
 
@@ -140,20 +140,24 @@ class BaiduTrans_v2trans:
                 'domain': 'common',
                 'token': token}
 
+        result = [{'src': 'error！', 'dst': '百度翻译v2transapi爬取错误!'}]
         try:
             baidutranslate = requests.post(url, headers=headers, data=data).json()
-            translate_result = baidutranslate['trans_result']['data'][0]['dst']
-            print('debug:baidutranslate:' + text + ' ---> ' + baidutranslate)
+            # t = baidutranslate['trans_result']['data'][0]['dst']
+            result = baidutranslate['trans_result']['data']
+
         except Exception as e:
-            print('debug:baidutranslate:Error')
             print(e)
 
-        # 如果目标语言是英语 且 翻译结果包含中文 且 原始文本不包含中文，返回原文
-        if Translate_to_language == 'en' and is_contain_chinese(translate_result) and not is_contain_chinese(text):
-            translate_result = text
-        # 如果目标语言是中文 且 翻译结果不包含中文 且 原始文本包含中文，返回原文
-        if Translate_to_language == 'zh' and not is_contain_chinese(translate_result) and is_contain_chinese(text):
-            translate_result = text
+        translate_result = ''
+        for line in result:
+            translate_result = translate_result + '\n' + (line['dst'])
+        # # 如果目标语言是英语 且 翻译结果包含中文 且 原始文本不包含中文，返回原文
+        # if Translate_to_language == 'en' and is_contain_chinese(translate_result) and not is_contain_chinese(text):
+        #     translate_result = text
+        # # 如果目标语言是中文 且 翻译结果不包含中文 且 原始文本包含中文，返回原文
+        # if Translate_to_language == 'zh' and not is_contain_chinese(translate_result) and is_contain_chinese(text):
+        #     translate_result = text
 
         print('BaiduTrans_v2trans:' + text + ' ---> ' + translate_result)
         return (translate_result,)
