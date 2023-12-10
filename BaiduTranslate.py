@@ -84,14 +84,15 @@ class BaiduTrans_devapi:
         # Send request
         try:
             r = requests.post(url, params=payload, headers=headers)
-            result = r.json()
-            translate_result = result['trans_result'][0]['dst']
+            result = r.json()['trans_result']
 
         except Exception as e:
             print(e)
 
-        # Show response
-        # print(json.dumps(result, indent=4, ensure_ascii=False))
+        translate_result = ''
+        for line in result:
+            translate_result = translate_result + '\n' + (line['dst'])
+            print(s)
         print('BaiduTrans_Api:' + text + ' ---> ' + translate_result)
         return (translate_result,)
 
