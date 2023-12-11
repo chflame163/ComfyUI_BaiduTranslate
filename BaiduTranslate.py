@@ -28,15 +28,15 @@ def is_contain_chinese(check_str):
     return False
 
 # 替换字符串中间一部分为'*'，reserve_digits是首尾保留位数
-def string_asterisk_mask(str, reserve_digits):
-    if len(str)==1:
+def string_asterisk_mask(str_, reserve_digits):
+    if len(str_)==1:
         return '*'
-    elif len(str) <= reserve_digits * 2:
-        return str[:1] + re.sub(r'.','*', str[1:])
+    elif len(str_) <= reserve_digits * 2:
+        return str_[:1] + re.sub(r'.','*', str_[1:])
     else:
-        return (str[:reserve_digits]
-                + re.sub(r'.','*', str[reserve_digits:-reserve_digits])
-                + str[-reserve_digits:])
+        return (str_[:reserve_digits]
+                + re.sub(r'.','*', str_[reserve_digits:-reserve_digits])
+                + str_[-reserve_digits:])
 
 
 # 通用翻译模块
@@ -74,12 +74,11 @@ class TextTranslate:
             # get appid and appkey
             appid = api_dict['baidu_dev_appid']
             appkey = api_dict['baidu_dev_appkey']
-            print(f'BaiduTrans_devapi: appid={string_asterisk_mask(appid, 3)}, appkey={string_asterisk_mask(appkey, 3)}')
-
-            endpoint = 'http://api.fanyi.baidu.com'
-            path = '/api/trans/vip/translate'
-            url = endpoint + path
+            url = 'http://api.fanyi.baidu.com/api/trans/vip/translate'
             query = text
+
+            print(f'TextTranslate: Baidu developer API, appid={string_asterisk_mask(appid, 3)}, '
+                  f'appkey={string_asterisk_mask(appkey, 3)}, url={url}')
 
             # Generate salt and sign
             salt = random.randint(32768, 65536)
@@ -103,7 +102,7 @@ class TextTranslate:
             for line in result:
                 translate_result = translate_result + (line['dst']) + '\n'
             translate_result = translate_result[:-1]
-            print('TextTranslate Baidu developer API:' + text + ' ---> ' + translate_result)
+            print('TextTranslate: Baidu developer API, ' + text + ' ---> ' + translate_result)
             if translate_result == 'error!':
                 print(debugmsg)
 
@@ -111,6 +110,7 @@ class TextTranslate:
 
             token = '012cd082bf1f821bb7d94981bf6d477a'
             url = 'https://fanyi.baidu.com/v2transapi'
+            print(f'TextTranslate: Baidu v2Trans API, token={string_asterisk_mask(token, 3)}, url={url}')
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
                 'cookie': 'BIDUPSID=3641572D5E0DB57A2F20F8F3373E302C; PSTM=1687090179; '
@@ -142,19 +142,20 @@ class TextTranslate:
             for line in result:
                 translate_result = translate_result + (line['dst']) + '\n'
             translate_result = translate_result[:-1]
-            print('TextTranslate Baidu_v2trans API:' + text + ' ---> ' + translate_result)
+            print('TextTranslate: Baidu_v2Trans API, ' + text + ' ---> ' + translate_result)
             if translate_result == 'error!' :
                 print(debugmsg)
 
         if API == 'NiuTrans API':
 
             apikey = api_dict['niutrans_apikey']
-
             url = 'http://api.niutrans.com/NiuTransServer/translation?'
             data = {"from": from_lang, "to": to_lang, "apikey": apikey, "src_text": text}
             data_en = urllib.parse.urlencode(data)
             req = url + "&" + data_en
             res_dict = {}
+
+            print(f'TextTranslate: NiuTrans API, apikey={string_asterisk_mask(apikey, 3)}, url={url[:-1]}')
             try:
                 res = urllib.request.urlopen(req)
                 res = res.read()
@@ -168,7 +169,7 @@ class TextTranslate:
             else:
                 translate_result = 'error!'
 
-            print('TextTranslate NiuTrans API:' + text + ' ---> ' + translate_result)
+            print('TextTranslate: NiuTrans API, ' + text + ' ---> ' + translate_result)
             if translate_result == 'error!':
                 print(debugmsg)
 
@@ -199,8 +200,6 @@ class BaiduTrans_devapi:
         # get appid and appkey
         appid = api_dict['baidu_dev_appid']
         appkey = api_dict['baidu_dev_appkey']
-        print(f'BaiduTrans_devapi: appid={string_asterisk_mask(appid, 3)}, appkey={string_asterisk_mask(appkey, 3)}')
-
         # For list of language codes, please refer to `https://api.fanyi.baidu.com/doc/21`
         from_lang = 'auto'
         to_lang = Translate_to_language
@@ -210,6 +209,8 @@ class BaiduTrans_devapi:
         url = endpoint + path
         query = text
         translate_result = ''
+        print(f'BaiduTrans_devapi: appid={string_asterisk_mask(appid, 3)}, '
+              f'appkey={string_asterisk_mask(appkey, 3)}, url={url}')
 
         # Generate salt and sign
         salt = random.randint(32768, 65536)
@@ -291,12 +292,12 @@ class BaiduTrans_v2trans:
         for line in result:
             translate_result = translate_result + (line['dst']) + '\n'
         translate_result = translate_result[:-1]
-        # # 如果目标语言是英语 且 翻译结果包含中文 且 原始文本不包含中文，返回原文
-        # if Translate_to_language == 'en' and is_contain_chinese(translate_result) and not is_contain_chinese(text):
-        #     translate_result = text
-        # # 如果目标语言是中文 且 翻译结果不包含中文 且 原始文本包含中文，返回原文
-        # if Translate_to_language == 'zh' and not is_contain_chinese(translate_result) and is_contain_chinese(text):
-        #     translate_result = text
+        # 如果目标语言是英语 且 翻译结果包含中文 且 原始文本不包含中文，返回原文
+        if Translate_to_language == 'en' and is_contain_chinese(translate_result) and not is_contain_chinese(text):
+            translate_result = text
+        # 如果目标语言是中文 且 翻译结果不包含中文 且 原始文本包含中文，返回原文
+        if Translate_to_language == 'zh' and not is_contain_chinese(translate_result) and is_contain_chinese(text):
+            translate_result = text
 
         print('BaiduTrans_v2trans:' + text + ' ---> ' + translate_result)
         return (translate_result,)
