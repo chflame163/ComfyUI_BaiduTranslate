@@ -1,5 +1,14 @@
 # ComfyUI_BaiduTranslate  
 ComfyUI下使用的中英文文本翻译插件。  
+## 新增节点TextTranslate
+![img](image/TextTranslateNode.png)  
+
+这个节点提供API选项，集成了之前的Baidu developer API和v2trans API，并且新增加了小牛翻译NiuTrans API。   
+请在[小牛翻译](https://niutrans.com/cloud/overview)申请***文本翻译API***服务，之后将获得的API-KEY填写到
+apikey.json文件的"niutrans_apikey"对应值位置(在"niutrans_apikey":后面的引号""内)。  
+同时请将原baidu_devapi.json中记录的百度开发者API和appkey也迁移到这个文件，否则将不能正常使用。
+
+### 请把您的工作流用新节点代替旧节点，BaiduTrans(DevApi)和BaiduTrans(v2trans)将不再更新。
 
 ![img](image/BaiduTrans_plugin.png)  
 
