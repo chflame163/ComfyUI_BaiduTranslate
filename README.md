@@ -10,13 +10,16 @@ apikey.json文件的"niutrans_apikey"对应值位置(在"niutrans_apikey":后面
 
 ### 请把您的工作流用新节点代替旧节点，BaiduTrans(DevApi)和BaiduTrans(v2trans)将不再更新。
 
-![img](image/BaiduTrans_plugin.png)  
-
+## 以下是旧节点说明
+  
+有两个节点可供使用，区别是使用了不同的翻译接口。  
 ### 插件调整项：  
 **Translate_to_language：** 翻译目标语言。en是英语，zh是简体中文。  
 
-## 节点说明：  
-有两个节点可供使用，区别是使用了不同的翻译接口。  
+![img](image/BaiduTrans_plugin.png)  
+
+
+
 ### BaiduTrans(DevApi):  
 使用百度翻译个人开发者apiid及密钥，每月100万字符免费额度。  
 在[https://fanyi-api.baidu.com/](https://fanyi-api.baidu.com/) 免费申请成为开发者，并在控制台开通高级版即可使用，你将获得一个APIid和对应的密钥。  
