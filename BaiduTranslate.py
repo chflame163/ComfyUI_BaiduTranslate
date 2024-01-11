@@ -11,12 +11,12 @@ import re
 
 
 # 读取百度翻译的加盐算法
-js_file = os.path.dirname(__file__) + '/js/BaiduTranslate_sign.js'
+js_file = os.path.join(os.path.join(os.path.dirname(__file__), 'js'), 'BaiduTranslate_sign.js')
 with open(js_file, 'r', encoding='utf-8') as f:
     sign_js = execjs.compile(f.read())
 
 # 读取json
-json_file = os.path.dirname(__file__) + '/apikey.json'
+json_file = os.path.join(os.path.dirname(__file__), 'apikey.json')
 with open(json_file, 'r') as f:
     api_dict = json.load(f)
 
@@ -60,7 +60,7 @@ class TextTranslate:
 
     RETURN_TYPES = ('STRING',)
     FUNCTION = 'text_translation'
-    CATEGORY = 'Baidu Translate'
+    CATEGORY = '😺dzNodes'
 
     def text_translation(self, text, Translate_to_language, API):
 
@@ -77,7 +77,7 @@ class TextTranslate:
             url = 'http://api.fanyi.baidu.com/api/trans/vip/translate'
             query = text
 
-            print(f'TextTranslate: Baidu developer API, appid={string_asterisk_mask(appid, 3)}, '
+            print(f'# 😺dzNodes: TextTranslate: Baidu developer API, appid={string_asterisk_mask(appid, 3)}, '
                   f'appkey={string_asterisk_mask(appkey, 3)}, url={url}')
 
             # Generate salt and sign
@@ -102,7 +102,7 @@ class TextTranslate:
             for line in result:
                 translate_result = translate_result + (line['dst']) + '\n'
             translate_result = translate_result[:-1]
-            print('TextTranslate: Baidu developer API, ' + text + ' ---> ' + translate_result)
+            print('# 😺dzNodes: TextTranslate: Baidu developer API, ' + text + ' ---> ' + translate_result)
             if translate_result == 'error!':
                 print(debugmsg)
 
@@ -110,7 +110,7 @@ class TextTranslate:
 
             token = '012cd082bf1f821bb7d94981bf6d477a'
             url = 'https://fanyi.baidu.com/v2transapi'
-            print(f'TextTranslate: Baidu v2Trans API, token={string_asterisk_mask(token, 3)}, url={url}')
+            print(f'# 😺dzNodes: TextTranslate: Baidu v2Trans API, token={string_asterisk_mask(token, 3)}, url={url}')
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
                 'cookie': 'BIDUPSID=3641572D5E0DB57A2F20F8F3373E302C; PSTM=1687090179; '
@@ -142,7 +142,7 @@ class TextTranslate:
             for line in result:
                 translate_result = translate_result + (line['dst']) + '\n'
             translate_result = translate_result[:-1]
-            print('TextTranslate: Baidu_v2Trans API, ' + text + ' ---> ' + translate_result)
+            print('# 😺dzNodes: TextTranslate: Baidu_v2Trans API, ' + text + ' ---> ' + translate_result)
             if translate_result == 'error!' :
                 print(debugmsg)
 
@@ -155,7 +155,7 @@ class TextTranslate:
             req = url + "&" + data_en
             res_dict = {}
 
-            print(f'TextTranslate: NiuTrans API, apikey={string_asterisk_mask(apikey, 3)}, url={url[:-1]}')
+            print(f'# 😺dzNodes: TextTranslate: NiuTrans API, apikey={string_asterisk_mask(apikey, 3)}, url={url[:-1]}')
             try:
                 res = urllib.request.urlopen(req)
                 res = res.read()
@@ -169,7 +169,7 @@ class TextTranslate:
             else:
                 translate_result = 'error!'
 
-            print('TextTranslate: NiuTrans API, ' + text + ' ---> ' + translate_result)
+            print('# 😺dzNodes: TextTranslate: NiuTrans API, ' + text + ' ---> ' + translate_result)
             if translate_result == 'error!':
                 print(debugmsg)
 
@@ -193,7 +193,7 @@ class BaiduTrans_devapi:
 
     RETURN_TYPES = ('STRING',)
     FUNCTION = 'translation_devapi'
-    CATEGORY = 'Baidu Translate'
+    CATEGORY = '😺dzNodes'
 
     def translation_devapi(self, Translate_to_language, text):
 
@@ -209,7 +209,7 @@ class BaiduTrans_devapi:
         url = endpoint + path
         query = text
         translate_result = ''
-        print(f'BaiduTrans_devapi: appid={string_asterisk_mask(appid, 3)}, '
+        print(f'# 😺dzNodes: BaiduTrans_devapi: appid={string_asterisk_mask(appid, 3)}, '
               f'appkey={string_asterisk_mask(appkey, 3)}, url={url}')
 
         # Generate salt and sign
@@ -233,7 +233,7 @@ class BaiduTrans_devapi:
         for line in result:
             translate_result = translate_result + (line['dst']) + '\n'
         translate_result = translate_result[:-1]
-        print('BaiduTrans_Api:' + text + ' ---> ' + translate_result)
+        print('# 😺dzNodes: BaiduTrans_Api:' + text + ' ---> ' + translate_result)
         return (translate_result,)
 
 class BaiduTrans_v2trans:
@@ -251,7 +251,7 @@ class BaiduTrans_v2trans:
 
     RETURN_TYPES = ('STRING',)
     FUNCTION = 'translation_v2trans'
-    CATEGORY = 'Baidu Translate'
+    CATEGORY = '😺dzNodes'
     OUTPUT_NODE = True
 
     def translation_v2trans(self, Translate_to_language, text):
@@ -299,7 +299,7 @@ class BaiduTrans_v2trans:
         if Translate_to_language == 'zh' and not is_contain_chinese(translate_result) and is_contain_chinese(text):
             translate_result = text
 
-        print('BaiduTrans_v2trans:' + text + ' ---> ' + translate_result)
+        print('# 😺dzNodes: BaiduTrans_v2trans:' + text + ' ---> ' + translate_result)
         return (translate_result,)
 
 # NOTE: names should be globally unique
