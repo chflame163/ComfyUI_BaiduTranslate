@@ -60,7 +60,7 @@ class TextTranslate:
 
     RETURN_TYPES = ('STRING',)
     FUNCTION = 'text_translation'
-    CATEGORY = '😺dzNodes'
+    CATEGORY = '😺dzNodes/BaiduTranslate'
 
     def text_translation(self, text, Translate_to_language, API):
 
@@ -193,7 +193,7 @@ class BaiduTrans_devapi:
 
     RETURN_TYPES = ('STRING',)
     FUNCTION = 'translation_devapi'
-    CATEGORY = '😺dzNodes'
+    CATEGORY = '😺dzNodes/BaiduTranslate'
 
     def translation_devapi(self, Translate_to_language, text):
 
@@ -251,7 +251,7 @@ class BaiduTrans_v2trans:
 
     RETURN_TYPES = ('STRING',)
     FUNCTION = 'translation_v2trans'
-    CATEGORY = '😺dzNodes'
+    CATEGORY = '😺dzNodes/BaiduTranslate'
     OUTPUT_NODE = True
 
     def translation_v2trans(self, Translate_to_language, text):
