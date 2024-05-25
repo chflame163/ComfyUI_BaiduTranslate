@@ -1,0 +1,15 @@
+[project]
+name = "comfyui_baidutranslate"
+description = "A Chinese and English text translation plugin for ComfyUI."
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["requests", "pyexecjs"]
+
+[project.urls]
+Repository = "https://github.com/chflame163/ComfyUI_BaiduTranslate"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "chflame163"
+DisplayName = "ComfyUI_BaiduTranslate"
+Icon = ""
