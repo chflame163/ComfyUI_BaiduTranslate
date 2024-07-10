@@ -5,15 +5,8 @@ import urllib.request
 import random
 import json
 import requests
-import execjs
 import os
 import re
-
-
-# 读取百度翻译的加盐算法
-js_file = os.path.join(os.path.join(os.path.dirname(__file__), 'js'), 'BaiduTranslate_sign.js')
-with open(js_file, 'r', encoding='utf-8') as f:
-    sign_js = execjs.compile(f.read())
 
 # 读取json
 json_file = os.path.join(os.path.dirname(__file__), 'apikey.json')
@@ -107,6 +100,11 @@ class TextTranslate:
                 print(debugmsg)
 
         if API == 'Baidu v2Trans API':
+            # 读取百度翻译的加盐算法
+            import execjs
+            js_file = os.path.join(os.path.join(os.path.dirname(__file__), 'js'), 'BaiduTranslate_sign.js')
+            with open(js_file, 'r', encoding='utf-8') as f:
+                sign_js = execjs.compile(f.read())
 
             token = '012cd082bf1f821bb7d94981bf6d477a'
             url = 'https://fanyi.baidu.com/v2transapi'
@@ -255,6 +253,12 @@ class BaiduTrans_v2trans:
     OUTPUT_NODE = True
 
     def translation_v2trans(self, Translate_to_language, text):
+
+        # 读取百度翻译的加盐算法
+        import execjs
+        js_file = os.path.join(os.path.join(os.path.dirname(__file__), 'js'), 'BaiduTranslate_sign.js')
+        with open(js_file, 'r', encoding='utf-8') as f:
+            sign_js = execjs.compile(f.read())
 
         from_lang = 'auto'
         to_lang = Translate_to_language
