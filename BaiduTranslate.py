@@ -45,7 +45,7 @@ class TextTranslate:
         ]
         return {
             'required': {
-                'text': ('STRING', {'multiline': True}),
+                'text': ('STRING', {'multiline': True, "forceInput":False}),
                 'Translate_to_language': (['en', 'zh'], {'default': 'en'}),
                 "API": (API,),
             },
